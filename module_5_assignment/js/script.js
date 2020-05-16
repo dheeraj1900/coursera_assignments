@@ -26,13 +26,11 @@ var menuItemHtml = "snippets/menu-item.html";
 // Convenience function for inserting innerHTML for 'select'
 var insertHtml = function (selector, html) {
   var targetElem = document.querySelector(selector);
-console.log("html"+html);
   targetElem.innerHTML = html;
 };
 
 // Show loading icon inside element identified by 'selector'.
 var showLoading = function (selector) {
-  console.log("selector"+selector);
   var html = "<div class='text-center'>";
   html += "<img src='images/ajax-loader.gif'></div>";
   insertHtml(selector, html);
@@ -42,7 +40,6 @@ var showLoading = function (selector) {
 // with propValue in given 'string'
 var insertProperty = function (string, propName, propValue) {
   var propToReplace = "{{" + propName + "}}";
-  console.log("propValue"+propValue);
   string = string
     .replace(new RegExp(propToReplace, "g"), propValue);
   return string;
@@ -86,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
   allCategoriesUrl,
-  buildAndShowHomeHTML(allCategoriesUrl), // ***** <---- TODO: STEP 1: Substitute [...] ******
+  buildAndShowHomeHTML, // ***** <---- TODO: STEP 1: Substitute [...] ******
   true); // Explicitly setting the flag to get JSON from server processed into an object literal
 });
 // *** finish **
@@ -100,10 +97,7 @@ function buildAndShowHomeHTML (categories) {
   $ajaxUtils.sendGetRequest(
     homeHtmlUrl,
     function (homeHtml) {
-
      var chosenCategoryShortName=chooseRandomCategory(categories);
-     
-
       // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
       // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
       // variable's name implies it expects.
@@ -122,7 +116,6 @@ function buildAndShowHomeHTML (categories) {
       // it into the home html snippet.
       //
       // var homeHtmlToInsertIntoMainPage = ....
-      console.log("chosenCategoryShortName "+chosenCategoryShortName);
       var homeHtmlToInsertIntoMainPage =insertProperty(homeHtml,"randomCategoryShortName",chosenCategoryShortName);
 
 
@@ -144,7 +137,7 @@ function chooseRandomCategory (categories) {
 
   // return category object with that randomArrayIndex
   
-  return categories[randomArrayIndex];
+  return  categories[randomArrayIndex].short_name;
 
 }
 
